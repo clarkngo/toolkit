@@ -16,6 +16,11 @@ Use for service now: `sys_created_on>=javascript:gs.dateGenerate('2022-06-16','1
 ```
 
 
+// 2021-06-16 16:10:43
+```
+private static final String SNOW_DATETIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
+private static final ZoneId SNOW_TIMEZONE = Constant.PST_ZONED_ID;
+```
 Output: (ZonedDateTime) "2022-06-17T13:13:52-07:00[America/Los_Angeles]"
 ```
     public static ZonedDateTime convertFromSnowTimeString(String snowTimeString) {
