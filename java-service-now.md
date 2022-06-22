@@ -35,3 +35,16 @@ Output: (ZonedDateTime) "2022-06-17T13:13:52-07:00[America/Los_Angeles]"
         return localDateTime.atZone(SNOW_TIMEZONE);
     }
 ```
+3.
+Output: (ZonedDateTime) "2022-06-17T13:13:52-07:00"
+```
+    public static ZonedDateTime convertFromSnowTimeString(String snowTimeString) {
+        if (snowTimeString == null || snowTimeString.isEmpty()) {
+            return null;
+        }
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(SNOW_DATETIME_PATTERN);
+        LocalDateTime localDateTime = LocalDateTime.parse(snowTimeString, formatter);
+        String offset = localDateTime.atZone(SNOW_TIMEZONE).getOffset().toString();
+        return localDateTime.atOffset(ZoneOffset.of(offset)).toZonedDateTime();
+    }
+```
