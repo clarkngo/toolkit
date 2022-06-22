@@ -1,3 +1,4 @@
+1. 
 Output: `javascript:gs.dateGenerate('2022-06-16','15:44:06')`
 Use for service now: `sys_created_on>=javascript:gs.dateGenerate('2022-06-16','15:44:06')`
 
@@ -15,7 +16,7 @@ Use for service now: `sys_created_on>=javascript:gs.dateGenerate('2022-06-16','1
     }
 ```
 
-
+2. 
 // 2021-06-16 16:10:43
 ```
 private static final String SNOW_DATETIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
