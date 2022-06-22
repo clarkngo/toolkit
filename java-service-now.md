@@ -1,3 +1,5 @@
+Use offset for storing in database: https://www.baeldung.com/java-zoneddatetime-offsetdatetime
+
 1. 
 Output: `javascript:gs.dateGenerate('2022-06-16','15:44:06')`
 Use for service now: `sys_created_on>=javascript:gs.dateGenerate('2022-06-16','15:44:06')`
