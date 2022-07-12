@@ -60,7 +60,20 @@ POST {indexName}/_update_by_query
   }
 }
 ```
-
+- remove field
+```
+POST {indexName}/_update_by_query
+{
+  "query": {
+        "constant_score" : {
+            "filter" : {
+                "exists" : { "field" : "raw" }
+            }
+        }
+  },
+  "script" : "ctx._source.remove('raw')"
+}
+```
 Delete by query
 - all
 POST {indexName}/_delete_by_query
