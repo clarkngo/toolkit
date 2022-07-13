@@ -24,3 +24,13 @@ https://jirap.corp.ebay.com/browse/TEST-73480
 ```
 "https:\\/\\/jirap.corp.ebay.com\\/browse\\/TEST-\\d+";
 ```
+
+exclude first and last character
+```
+":appname-"
+```
+example:
+```
+input: Rollback manifest ID:appnem-0.0.1_SNAPSHOT_20220510042405761
+output: appname
+```
