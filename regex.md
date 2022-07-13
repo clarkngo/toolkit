@@ -27,7 +27,7 @@ https://jirap.corp.ebay.com/browse/TEST-73480
 
 exclude first and last character
 ```
-":appname-"
+"(?<=:).*(?=-)"
 ```
 example:
 ```
