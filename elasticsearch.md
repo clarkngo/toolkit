@@ -98,6 +98,6 @@ POST {indexName}/_delete_by_query
 ```
 
 Fix "org.elasticsearch.indices.IndexClosedException: closed". 
-
+```
 POST {index_name}/_open
-
+```
