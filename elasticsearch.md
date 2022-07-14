@@ -76,8 +76,8 @@ POST {indexName}/_update_by_query
 ```
 Delete by query
 - all
-POST {indexName}/_delete_by_query
 ```
+POST {indexName}/_delete_by_query
 {
   "query": {     
         "match_all" : {}
@@ -87,8 +87,8 @@ POST {indexName}/_delete_by_query
 ```
 - match field
 - all
-POST {indexName}/_delete_by_query
 ```
+POST {indexName}/_delete_by_query
 {
   "query": {     
     "match": {
@@ -99,5 +99,6 @@ POST {indexName}/_delete_by_query
 ```
 
 Fix "org.elasticsearch.indices.IndexClosedException: closed". 
+
 POST {index_name}/_open
 
