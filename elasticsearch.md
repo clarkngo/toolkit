@@ -86,7 +86,6 @@ POST {indexName}/_delete_by_query
 
 ```
 - match field
-- all
 ```
 POST {indexName}/_delete_by_query
 {
