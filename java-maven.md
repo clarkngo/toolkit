@@ -17,3 +17,6 @@ use maven to manage versions
 ### Dev unit tests (with endpoints only available in prod env)
 - add c2sProxy
 - `mvn -pl common-test test "-Dtest=com.common.devtest.**"`
+
+Dump
+- `mvn -X -pl adsinfra-common-test test -Dtest=GlobalConfigTest > /tmp/debug_globalconfig.out`
