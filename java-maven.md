@@ -18,5 +18,5 @@ use maven to manage versions
 - add c2sProxy
 - `mvn -pl common-test test "-Dtest=com.common.devtest.**"`
 
-Dump
-- `mvn -X -pl adsinfra-common-test test -Dtest=GlobalConfigTest > /tmp/debug_globalconfig.out`
+Dump (update this)
+- `mvn -X -pl a-common-test test -Dtest=ConfigTest > /tmp/debug_config.out`
