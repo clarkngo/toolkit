@@ -1,4 +1,4 @@
-(Maven CLI Options Reference)[https://maven.apache.org/ref/3.6.3/maven-embedder/cli.html]
+[Maven CLI Options Reference](https://maven.apache.org/ref/3.6.3/maven-embedder/cli.html)
 
 Run a specific batch job
 ```
