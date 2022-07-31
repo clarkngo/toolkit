@@ -20,7 +20,6 @@ nano ~/.zshenv
 Add this:
 ```
 export JAVA_HOME=$(/usr/libexec/java_home)
-
 ```
 
 Check:
