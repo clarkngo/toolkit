@@ -1,6 +1,22 @@
-View mapping
+# Mapping
+
+## View mapping
 ```
 GET{index_name}/_mapping
+```
+
+## Add new mapping
+```
+PUT {index_name}
+{
+  "mappings": {
+    "properties": {
+      "endAt": {
+        "type": "date" 
+      }
+    }
+  }
+}
 ```
 
 Search and match field
