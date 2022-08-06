@@ -30,3 +30,7 @@ Expected result:
 ```
 /Library/Java/JavaVirtualMachines/jdk-16.jdk/Contents/Home  
 ```
+
+# Homebrew
+
+https://formulae.brew.sh/formula/mysql
