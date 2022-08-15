@@ -3,7 +3,7 @@ Test Read File
 ```
     @Test
     public void testReadFile() throws IOException {
-        Object obj = Util.getDefaultObjectMapper().readValue(ClassLoader.getSystemClassLoader().getResourceAsStream("BUSINESS_UNITS.json"), Object.class);
+        Object obj = Util.getDefaultObjectMapper().readValue(ClassLoader.getSystemClassLoader().getResourceAsStream("data.json"), Object.class);
         log.info(String.valueOf(obj));
     }
 ```
