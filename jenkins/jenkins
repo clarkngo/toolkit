@@ -1,0 +1,143 @@
+#!/usr/bin/env groovy
+// Requires Pipeline Maven Integration Plugin: https://plugins.jenkins.io/pipeline-maven
+def DEFAULT_DEPLOYMENT_KEY_ID = 'Infra-Comm-Deploy-Key-Prod'
+
+def mailingList = 'DL-m-Ads-Infra <DL-m-Ads-Infra@m.com>'
+// TODO: Add a Slack-email address
+def releaseMailingList = "$mailingList"
+
+def agentLabel = 'raptor-io-builder'
+def jdkVersion = 'OPENJDK8'
+
+def masterBranch = "master"
+
+def jenkinsGitUser = "jenkins"
+def jenkinsGitEmail = "jenkins@m.com"
+
+def MVN_OPTS = '-B -Dmaven.artifact.threads=8'
+def SKIP_SOURCES = "-Dsource.skip=true -DskipSource -DskipSource=true"
+def SKIP_TESTS = "-Dmaven.test.skip=true -DskipTests -DskipTests=true"
+
+def TO_KEEP_STR = '10'
+def DAYS_TO_KEEP_STR = '30'
+
+properties([
+        buildDiscarder(
+                logRotator(artifactDaysToKeepStr: DAYS_TO_KEEP_STR, artifactNumToKeepStr: TO_KEEP_STR, daysToKeepStr: DAYS_TO_KEEP_STR, numToKeepStr: TO_KEEP_STR)
+        ),
+        disableConcurrentBuilds(),
+        parameters([
+                string(
+                        name: 'DEPLOYMENT_KEY',
+                        defaultValue: DEFAULT_DEPLOYMENT_KEY_ID,
+                        description: 'Deployment Key ID for GitHub Repo'),
+                choice(choices: ['Minor', 'Incremental'],
+                        description: 'Minor: 1.0.0 -> 1.1.0; Incremental: 1.0.0 -> 1.0.1',
+                        name: 'BUMP_VERSION'),
+                string(
+                        name: 'VERSION_OVERRIDE',
+                        defaultValue: '',
+                        description: 'Provide the exact string value for this release; example 1.3.1; Do NOT include RELEASE suffix!'
+                )
+        ]),
+])
+
+def deployKey = params.DEPLOYMENT_KEY
+def scmVars
+
+def gitOrg = 'adsinfra'
+def gitRepo = 'adsinfra-common'
+def previousVersion = ""
+def version = ""
+def releaseVersion = "'\${parsedVersion.majorVersion}.\${parsedVersion.minorVersion}.\${parsedVersion.incrementalVersion}'"
+def developmentVersion = "'\${parsedVersion.majorVersion}.\${parsedVersion.nextMinorVersion}.0-SNAPSHOT'"
+
+// Override the agentLabel
+if (env.DEFAULT_AGENT_LABEL?.trim()) {
+    agentLabel = env.DEFAULT_AGENT_LABEL
+}
+// Override the developmentVersion number if Incremental is selected
+if (env.BUMP_VERSION?.trim() == "Incremental") {
+    developmentVersion = "'\${parsedVersion.majorVersion}.\${parsedVersion.minorVersion}.\${parsedVersion.nextIncrementalVersion}-SNAPSHOT'"
+}
+// Override release and development versions when a specific version string is provided
+if (env.VERSION_OVERRIDE?.trim()) {
+    // Next development version stays the same
+    developmentVersion = releaseVersion + "-SNAPSHOT"
+    releaseVersion = env.VERSION_OVERRIDE
+}
+
+
+node(agentLabel) {
+    wrap([$class: 'TimestamperBuildWrapper']) {
+        // This needs ansiColor plugin to work
+        wrap([$class: 'AnsiColorBuildWrapper', 'colorMapName': 'xterm']) {
+            try {
+                env.JAVA_HOME = "${tool jdkVersion}"
+                env.PATH = "${env.JAVA_HOME}/bin:${env.PATH}"
+
+                scmVars = checkout scm
+
+                echo "GIT_BRANCH: ${scmVars.GIT_BRANCH}"
+                echo 'Starting RELEASE Build...'
+
+                stage('Checkout SCM') {
+                    deleteDir()
+                    checkout scm
+                    sh """
+                        git checkout ${masterBranch}
+                        git merge --ff-only origin/${masterBranch}
+                    """
+                    env.JAVA_HOME = "${tool 'OPENJDK8'}"
+                    env.PATH = "${env.JAVA_HOME}/bin:${env.PATH}"
+                }
+
+                // TODO add test goal when unit tests are fixed
+                stage('Test') {
+                    previousVersion = sh(returnStdout: true, script: 'git describe --abbrev=0 --tags').trim()
+                    sh "mvn -U ${MVN_OPTS} clean"
+                }
+
+                stage('Prepare Release') {
+                    echo "deploy key =${deployKey}"
+                    sshagent(credentials: [deployKey]) {
+                        // workaround for missing git info
+                        sh """
+                                git config user.name ${jenkinsGitUser}
+                                git config user.email ${jenkinsGitEmail}
+                        """
+
+                        // add -DdryRun=true when testing is needed. With that flag set to true, no commits will be pushed to remote
+                        sh """mvn ${MVN_OPTS} ${SKIP_SOURCES} ${SKIP_TESTS} -P release-prepare release:clean build-helper:parse-version release:prepare -DdevelopmentVersion=${developmentVersion} -DreleaseVersion=${releaseVersion}"""
+                        sh "mvn ${MVN_OPTS} ${SKIP_SOURCES} ${SKIP_TESTS} -P release release:perform -Darguments='-Dmaven.test.skip=true'"
+
+                        // dryRun will cause this to be 1 minor release behind
+                        version = sh(returnStdout: true, script: 'git describe --abbrev=0').trim()
+
+                        currentBuild.displayName = "#${BUILD_NUMBER}-${version}"
+                    }
+                }
+
+                stage('Publish Release Notes') {
+                    // TODO: create an access token that grants GITHUBBOT-pl access to adsinfra/adsinfra-common repo;
+                    // Currently this is using zhiyding's personal token
+                    withCredentials([[$class          : 'UsernamePasswordMultiBinding', credentialsId: 'git-token-credentials', usernameVariable: 'github_username',
+                                      passwordVariable: 'github_secret_token']]) {
+                        sh "mvn -B github:release -Drelease.previousTagName=${previousVersion} -Drelease.tagName=${version} -Drelease.gitOrg=${gitOrg} -Drelease.gitRepo=${gitRepo} -Drelease.format=features-flat"
+
+                    }
+                }
+
+            } catch (java.lang.Exception e) {
+                echo "Exception: ${e}"
+
+                currentBuild.result = "FAILURE"
+                mail body: "Project build error is here: ${env.BUILD_URL}",
+                        from: 'noreply-jenkins@m.com',
+                        subject: "[BUILD FAILURE] Job ${env.JOB_NAME} Build ${env.BUILD_ID}",
+                        to: mailingList, charset: 'UTF-8', mimeType: 'text/plain'
+                throw e
+            }
+        }
+    }
+}
