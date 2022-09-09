@@ -49,3 +49,26 @@ public class NewChangeReader implements ItemReader<Set<SnowTicket>> {
         ));
     }
 ```
+
+# Two Item Writers
+```
+    @Bean
+    public Job scrubChanges() {
+        List<ItemWriter<? super Set<Change>>> writers = new ArrayList<>();
+        writers.add(newChangeEsWriterV1);
+        writers.add(newChangeEsWriterV2);
+        CompositeItemWriter<Set<Change>> compositeItemWriter = new CompositeItemWriter<>();
+        compositeItemWriter.setDelegates(writers);
+        Step scrubChanges = stepBuilders
+                .get("scrubChange")
+                .<Set<SnowTicket>, Set<Change>>chunk(1)
+                .reader(newChangeReader)
+                .processor(newChangeProcessor)
+                .writer(compositeItemWriter)
+                .build();
+
+        return jobBuilders.get("changeScrubber")
+                .start(scrubChanges)
+                .build();
+    }
+```
