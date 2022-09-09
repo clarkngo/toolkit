@@ -1,0 +1,51 @@
+
+# Job Parameters
+```
+@Component
+@StepScope
+public class NewChangeReader implements ItemReader<Set<SnowTicket>> {
+
+    static final Duration MAX_PER_DURATION = Duration.ofDays(1);
+
+    String changeIndexPrefix;
+    SnowService snowService;
+    PoolMetadataProvider poolMetadataProvider;
+    DataProvider dataProvider;
+    EsService esService;
+    ZonedDateTime start;
+    ZonedDateTime end;
+
+    ZonedDateTime currentHead;
+
+    public NewChangeReader(
+            @Value("#{jobParameters.getOrDefault('startTimestamp', null)}") Long startTimestamp,
+            @Value("#{jobParameters.getOrDefault('endTimestamp', null)}") Long endTimestamp,
+            @Value("${endpoint.elasticsearch.index.change}") String changeIndexPrefix,
+            @Autowired SnowService snowService,
+            @Autowired PoolMetadataProvider poolMetadataProvider,
+            @Autowired DataProvider dataProvider,
+            @Autowired EsService esService
+    ) {
+        this.changeIndexPrefix = changeIndexPrefix;
+        this.snowService = snowService;
+        this.poolMetadataProvider = poolMetadataProvider;
+        this.dataProvider = dataProvider;
+        this.esService = esService;
+        if (startTimestamp == null) {
+            this.start = ChangeEsUtil.getRemoteHead(
+                    this.esService, this.changeIndexPrefix, ChangeType.CODE_ROLL, Constants.TIMESTAMP_FIELD_NAME);
+        } else {
+            this.start = ZonedDateTime.ofInstant(Instant.ofEpochMilli(startTimestamp), Constant.DEFAULT_ZONED_ID);
+        }
+        if (endTimestamp == null) {
+            this.end = ZonedDateTime.now();
+        } else {
+            this.end = ZonedDateTime.ofInstant(Instant.ofEpochMilli(endTimestamp), Constant.DEFAULT_ZONED_ID);
+        }
+        this.currentHead = this.start;
+        log.info(String.format("Start: %s; End: %s",
+                this.start.format(DateTimeFormatter.ISO_DATE_TIME),
+                this.end.format(DateTimeFormatter.ISO_DATE_TIME)
+        ));
+    }
+```
