@@ -1,5 +1,11 @@
 
 # Job Parameters
+## Run in Command Line
+```
+python3 /scripts/jobstart3.py changeScrubber startTimestamp=1669765767000 endTimestamp=1669938567000
+```
+
+## Code
 ```
 @Component
 @StepScope
