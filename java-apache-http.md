@@ -1,5 +1,6 @@
-
 # Trust all certs
+Resource: https://www.baeldung.com/okhttp-client-trust-all-certificates
+
 HttpClientHelper.java
 ```
 ...
