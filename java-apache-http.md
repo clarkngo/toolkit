@@ -1,6 +1,9 @@
 # Trust all certs
 Resource: https://www.baeldung.com/okhttp-client-trust-all-certificates
-
+Problem:
+```
+javax.net.ssl.SSLHandshakeException: PKIX path validation failed: java.security.cert.CertPathValidatorException: Path does not chain with any of the trust anchors
+```
 HttpClientHelper.java
 ```
 ...
