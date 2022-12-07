@@ -2,11 +2,21 @@
 # Job Parameters
 ## Run in Command Line
 ```
-python3 /scripts/jobstart3.py changeScrubber startTimestamp=1669765767000 endTimestamp=1669938567000
+python3 /scripts/jobstart3.py customJob epochStart=1669765767000 epochEnd=1669938567000
 ```
 
+Example given:
 ```
-mvn clean spring-boot:run -Dspring.batch.job.names=changeScrubber -Dspring.profiles.active=default,dev -f pom.xml startTimestamp=1669765767000 endTimestamp=1669938567000
+    public customJobReader(
+            @Value("#{jobParameters.getOrDefault('epochStart', null)}") Long epochStart,
+            @Value("#{jobParameters.getOrDefault('epochEnd', null)}") Long epochEnd,
+            @Value("${endpoint.elasticsearch.index.customIndex}") String esIndexPrefix,
+            @Autowired Elasticsearch elasticsearchService
+    )
+```
+In Command Line:
+```
+clean spring-boot:run -Drun.arguments=epochStart=1667790578000,epochEnd=1667790578000 -Dspring.batch.job.names=customJob -Dspring.profiles.active=default,dev -f pom.xml
 ```
 
 ## Code
