@@ -22,7 +22,7 @@ clean spring-boot:run -Drun.arguments=epochStart=1667790578000,epochEnd=16677905
 ## Code
 ```
 @Component
-@StepScope
+@StepScope // required for adding jobParameters
 public class NewChangeReader implements ItemReader<Set<SnowTicket>> {
 
     static final Duration MAX_PER_DURATION = Duration.ofDays(1);
