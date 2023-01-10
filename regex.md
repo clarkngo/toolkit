@@ -34,3 +34,23 @@ example:
 input: Rollback manifest ID:appnem-0.0.1_SNAPSHOT_20220510042405761
 output: appname
 ```
+
+get in between characters, excluding delimiters
+```
+(?<=\M)(.*?)(?=\M)
+```
+example:
+```
+input: MsnapshotM
+output: snasphot
+```
+
+get until character, excluding delimiter
+```
+(?<=\M)(.*?)(?=\M)
+```
+example:
+```
+input: snapshotM
+output: snasphot
+```
