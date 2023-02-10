@@ -28,6 +28,12 @@ Convert Json Array String to Java List
 Util.getDefaultObjectMapper().readValue(resp, TypeFactory.defaultInstance().constructCollectionType(List.class, Person.class));
 ```
 
+Convert Json Array to Java List
+```
+Util.getDefaultObjectMapper().convertValue(someJsonArray, new TypeReference<List<KidsmenuQueryDate>>(){});
+```
+
+
 ```
 
     @Test
