@@ -23,6 +23,11 @@ ObjectMapper objectMapper = JsonMapper.builder()
     }
 ```
 
+Convert Json Array String to Java List
+```
+Util.getDefaultObjectMapper().readValue(resp, TypeFactory.defaultInstance().constructCollectionType(List.class, Person.class));
+```
+
 ```
 
     @Test
