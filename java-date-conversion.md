@@ -19,6 +19,15 @@ public static ZonedDateTime convertDateStringToZonedDateTime(String dateString, 
 }
 ```
 
+// 2023-02-08T13:51:37.000Z
+```
+ZonedDateTime z = Util.convertTimeStringToZonedDateTime(
+        airtableMerchEp.getCreatedTime().replace(".000Z",""),
+        "yyyy-MM-dd'T'HH:mm:ss",
+        ZoneId.of("America/Phoenix"));
+```
+
+
 // others
 ```
     public static ZonedDateTime convertTimeStringToZonedDateTime(String timeString, String pattern, ZoneId zoneId) {
