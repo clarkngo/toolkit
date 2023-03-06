@@ -1,4 +1,19 @@
 ```
+            String[] cmd = {"curl", url};
+            // List<String> lines = console.execCurl(cmd);
+            List<String> lines = client.scrapePageContent(urk, MediaType.TEXT_PLAIN);
+
+            // Analyze the content of the curl response and store the data
+            metricProvider.analyzeContent(descriptions, metrics, metricUnit, lines, name, namespace, token, pool.getApplicationId());
+public class PoolService {
+    private void fetchInfo(String appInfoUrl, AppInfo appInfo) {
+        if (!"".equals(appBuildInfoUrl)) {
+            String[] cmd = {"curl", appInfoUrl};
+          //  List<String> lines = console.execCurl(cmd);
+            List<String> lines = client.scrapePageContent(appInfoUrl, MediaType.APPLICATION_XML);
+```
+
+```
 @Component
 @Slf4j
 public class RestClient {
