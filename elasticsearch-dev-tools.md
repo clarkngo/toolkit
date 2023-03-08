@@ -76,6 +76,19 @@ POST {indexName}/_update_by_query
   }
 }
 ```
+- (edit) change field value
+```
+POST /your-index/_update_by_query
+{
+  "query": {
+    "match_all": {}
+  },
+  "script": {
+    "source": "ctx._source.your_field_name = 'your_new_value'"
+  }
+}
+```
+
 - remove field
 ```
 POST {indexName}/_update_by_query
