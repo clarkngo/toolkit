@@ -29,30 +29,30 @@ public class HomeClickTest {
     EsService mockEsService;
 
     @Mock
-    SherlockResource mockSherlockResource;
+    MyResource mockMyResource;
 
     @Test
     public void testGetTopVariantTraffic_handlesNullInputs() {
         Long hour = 24*60*60L;
         JSONArray mockQueryResult = new JSONArray();
         JSONArray mockResult = new JSONArray();
-        String logQL = String.format("topk(%s,sum(count_over_time({_namespace_=\"homesplice2\",_schema_=\"all\"}[24h]|logfmt))by(AlgorithmFamily,AlgorithmVariant))", 50);
+        String logQL = String.format("topk(%s,sum(count_over_time({_namespace_=\"myapp\",_schema_=\"all\"}[24h]|logfmt))by(AlgorithmFamily,AlgorithmVariant))", 50);
         ReflectionTestUtils.setField(spyHClickSvc, "esService", mockEsService);
-        ReflectionTestUtils.setField(spyHClickSvc, "sheResource", mockSherlockResource);
+        ReflectionTestUtils.setField(spyHClickSvc, "sheResource", mockMyResource);
         when(spyHClickSvc.esService.index(anyString(), any(JSONArray.class))).thenReturn(null);
         when(spyHClickSvc.sheResource.runLogQLQuery(anyString(), anyString(), anyString(), anyString())).thenReturn(mockQueryResult);
         when(spyHClickSvc.sheResource.timeDiffSeconds(anyString(), anyString())).thenReturn(hour);
         when(spyHClickSvc.getAlgoTrafficResponse(any(JSONArray.class))).thenReturn(mockResult);
 
-        spyHClickSvc.getTopVariantTraffic(null, null, null, "0");
+        spyHClickSvc.getTopStat(null, null, null, "0");
 
         verify(spyHClickSvc.sheResource).timeDiffSeconds(anyString(), anyString());
         verify(spyHClickSvc.sheResource).runLogQLQuery(anyString(), anyString(), eq(Long.toString(hour + 1l)), eq(logQL));
-        verify(spyHClickSvc).getTopVariantTraffic(null, null, null, "0");
-        verify(spyHClickSvc).getAlgoTrafficResponse(mockQueryResult);
+        verify(spyHClickSvc).getTopStat(null, null, null, "0");
+        verify(spyHClickSvc).getStatResponse(mockQueryResult);
         verify(spyHClickSvc.esService, Mockito.never()).index(anyString(), any(Object.class));
 
-        spyHClickSvc.getTopVariantTraffic(null, null, null, "1");
+        spyHClickSvc.getTopStat(null, null, null, "1");
         verify(spyHClickSvc.esService).index(anyString(), any(Object.class));
     }
 }
