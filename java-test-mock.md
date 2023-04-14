@@ -23,7 +23,7 @@ import static org.mockito.Mockito.when;
 @SpringBootTest
 public class HomeClickTest {
     HomeClick HSClickeSvc = new HomeClick();
-    HomeClickHomeClick spyHClickSvc = spy(HSClickeSvc);
+    HomeClick spyHClickSvc = spy(HSClickeSvc);
 
     @Mock
     EsService mockEsService;
