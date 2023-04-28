@@ -63,11 +63,6 @@ another example
 ```
 package com.ebay.app.adsinfra.adsintermedsvc.resource;
 
-import com.ebay.adsinfra.common.api.Util;
-import com.ebay.adsinfra.common.api.client.elasticsearch.EsService;
-import com.ebay.adsinfra.common.api.client.elasticsearch.vo.SearchResponse;
-import com.ebay.app.adsinfra.adsintermedsvc.clients.airtable.AirTableClient;
-import com.ebay.app.adsinfra.adsintermedsvc.clients.airtable.AirTableResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.extern.slf4j.Slf4j;
