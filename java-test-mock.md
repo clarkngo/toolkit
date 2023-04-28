@@ -58,3 +58,53 @@ public class HomeClickTest {
 }
 
 ```
+
+another example
+```
+package com.ebay.app.adsinfra.adsintermedsvc.resource;
+
+import com.ebay.adsinfra.common.api.Util;
+import com.ebay.adsinfra.common.api.client.elasticsearch.EsService;
+import com.ebay.adsinfra.common.api.client.elasticsearch.vo.SearchResponse;
+import com.ebay.app.adsinfra.adsintermedsvc.clients.airtable.AirTableClient;
+import com.ebay.app.adsinfra.adsintermedsvc.clients.airtable.AirTableResponse;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.Assert;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.util.ReflectionTestUtils;
+
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.*;
+
+
+@Slf4j
+@ExtendWith(MockitoExtension.class)
+@SpringBootTest
+class MyResourceTest {
+
+    MyResource myResource = new MyResource();
+    MyResource spyMyResource = spy(myResource);
+
+    @Mock
+    MyService mockMyService;
+
+    @Test
+    void test() throws JsonProcessingException {
+        String jsonString = "{\"offset\"}";
+        Response mockResult = Util.getDefaultObjectMapper().readValue(jsonString, Response.class);
+        ReflectionTestUtils.setField(spyMyResource, "myService", mockMyService);
+        when(spyMyResource.myService.search(anyString(), anyString(), anyBoolean())).thenReturn(mockResult);
+        log.info(spyMyResource.myMethod().toString());
+        verify(spyMyResource).myMethod();
+    }
+
+}
+```
