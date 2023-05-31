@@ -1,3 +1,10 @@
+### UnneccessaryStubbingException fix at class level
+```
+@MockitoSettings(strictness = Strictness.LENIENT)
+```
+
+
+### SAMPLE
 ```
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
