@@ -1,8 +1,8 @@
 #!/usr/bin/env groovy
 // Requires Pipeline Maven Integration Plugin: https://plugins.jenkins.io/pipeline-maven
-def DEFAULT_DEPLOYMENT_KEY_ID = 'Infra-Comm-Deploy-Key-Prod'
+def DEFAULT_DEPLOYMENT_KEY_ID = 'Key-Prod'
 
-def mailingList = 'DL-m-Ads-Infra <DL-m-Ads-Infra@m.com>'
+def mailingList = 'DL-m <DL-m@m.com>'
 // TODO: Add a Slack-email address
 def releaseMailingList = "$mailingList"
 
@@ -45,8 +45,8 @@ properties([
 def deployKey = params.DEPLOYMENT_KEY
 def scmVars
 
-def gitOrg = 'adsinfra'
-def gitRepo = 'adsinfra-common'
+def gitOrg = 'me'
+def gitRepo = 'repo-me'
 def previousVersion = ""
 def version = ""
 def releaseVersion = "'\${parsedVersion.majorVersion}.\${parsedVersion.minorVersion}.\${parsedVersion.incrementalVersion}'"
@@ -119,8 +119,8 @@ node(agentLabel) {
                 }
 
                 stage('Publish Release Notes') {
-                    // TODO: create an access token that grants GITHUBBOT-pl access to adsinfra/adsinfra-common repo;
-                    // Currently this is using zhiyding's personal token
+                    // TODO: create an access token that grants GITHUBBOT-pl access to me/repo repo;
+                    // Currently this is using 's personal token
                     withCredentials([[$class          : 'UsernamePasswordMultiBinding', credentialsId: 'git-token-credentials', usernameVariable: 'github_username',
                                       passwordVariable: 'github_secret_token']]) {
                         sh "mvn -B github:release -Drelease.previousTagName=${previousVersion} -Drelease.tagName=${version} -Drelease.gitOrg=${gitOrg} -Drelease.gitRepo=${gitRepo} -Drelease.format=features-flat"
