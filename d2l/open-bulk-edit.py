@@ -19,7 +19,7 @@ password = os.environ.get('PASSWORD')
 login_url = os.environ.get('ADMIN_D2L_LOGIN')
 assignments=["HOP", "HOS", "PE", "TP", "DB", "MP", "CD"]
 labels = ["Has Start Date", "Has End Date"]
-csv_file_path = "manual_courses.csv"
+csv_file_path = os.environ.get('CSV_COURSE_PATH')
 url_assignments = "https://mycourses.cityu.edu/d2l/lms/dropbox/admin/folders_manage.d2l?ou="
 url_quick_edit = "https://mycourses.cityu.edu/d2l/lms/dropbox/admin/folders_quickedit.d2l"
 course_selected = 0
