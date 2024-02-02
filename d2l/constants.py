@@ -3,12 +3,13 @@ from dotenv import load_dotenv
 import os
 
 ASSIGNMENTS=["HOP", "HOS", "PE", "TP", "DB", "MP", "CD"]
-LABELS = ["Has Start Date", "Has End Date"]
-URL_ASSIGNMENTS = "https://mycourses.cityu.edu/d2l/lms/dropbox/admin/folders_manage.d2l?ou="
-URL_QUICK_EDIT = "https://mycourses.cityu.edu/d2l/lms/dropbox/admin/folders_quickedit.d2l"
-URL_DISCUSSION_BEGIN = "https://mycourses.cityu.edu/d2l/le/"
-URL_DISCUSSION_END = "/discussions/List?dst=1"
-URL_MANAGE_DATES= "https://mycourses.cityu.edu/d2l/lms/manageDates/date_manager.d2l?fromCMC=1&ou="
+LABELS=["Has Start Date", "Has End Date"]
+URL_ASSIGNMENTS="https://mycourses.cityu.edu/d2l/lms/dropbox/admin/folders_manage.d2l?ou="
+URL_QUICK_EDIT="https://mycourses.cityu.edu/d2l/lms/dropbox/admin/folders_quickedit.d2l"
+URL_DISCUSSION_BEGIN="https://mycourses.cityu.edu/d2l/le/"
+URL_DISCUSSION_END="/discussions/List?dst=1"
+URL_MANAGE_DATES="https://mycourses.cityu.edu/d2l/lms/manageDates/date_manager.d2l?fromCMC=1&ou="
+URL_CONTENT="https://mycourses.cityu.edu/d2l/le/lessons/"
 
 COURSE_SELECTED = 0
 
