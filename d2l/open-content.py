@@ -3,6 +3,7 @@ from constants import *
 from helper import *
 
 course_selected = select_course_from_csv(CSV_FILE_PATH)
+
 url = URL_CONTENT + course_selected
 
 driver = setup_web_driver()
