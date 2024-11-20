@@ -35,7 +35,7 @@ driver.quit()
 # from github import Github
 
 # # Initialize GitHub instance with your personal access token
-# g = Github("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")
+# g = Github("")
 
 # def test_github_connection(github_instance):
 #     try:
