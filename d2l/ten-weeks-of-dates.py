@@ -61,3 +61,4 @@ weeks_to_generate = 10
 
 # Generate and save the Word document
 generate_date_range(start_date_input, weeks_to_generate)
+print("saved as output.docx")
