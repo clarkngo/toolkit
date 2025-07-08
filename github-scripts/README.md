@@ -1,8 +1,9 @@
 # GitHub Scripts
 
 ## Setup
-Get your GitHub personal access token here:
+1. Get your GitHub personal access token here:
 https://github.com/settings/tokens
+2. create a `.env` file and copy the format from `example.env`
 
 ### invite_script.py - invite github usernames to organization
 1. update `users_to_invite.txt` with github username per line
