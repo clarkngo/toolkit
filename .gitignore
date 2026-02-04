@@ -4,3 +4,4 @@
 *.docx
 *.txt
 *__pycache__*
+.venv
